@@ -6,6 +6,7 @@ import { validateEmail } from "../../utils/helper"
 
 import axios from "axios"
 import { toast } from "react-toastify"
+import PasswordInput from "../../components/Input/PasswordInput"
 
 const Login = () => {
   const [email, setEmail] = useState("")
@@ -66,7 +67,10 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
 
-          
+          <PasswordInput
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           {error && <p className="text-red-500 text-sm pb-1">{error}</p>}
 
