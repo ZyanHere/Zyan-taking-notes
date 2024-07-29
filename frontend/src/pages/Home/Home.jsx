@@ -6,10 +6,12 @@ import AddEditNotes from "./AddEditNotes"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../../components/Navbar"
-
+import axios from "axios"
+import { toast } from "react-toastify"
+import EmptyCard from "../../components/EmptyCard/EmptyCard"
 
 const Home = () => {
-  const { currentUser} = useSelector(
+  const { currentUser } = useSelector(
     (state) => state.user
   )
 
@@ -17,6 +19,8 @@ const Home = () => {
   const [allNotes, setAllNotes] = useState([])
 
   const [isSearch, setIsSearch] = useState(false)
+
+  // console.log(allNotes)
 
   const navigate = useNavigate()
 
@@ -36,24 +40,98 @@ const Home = () => {
   }, [])
 
   // get all notes
-  const getAllNotes = async () => {}
+  const getAllNotes = async () => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/note/all", {
+        withCredentials: true,
+      })
+
+      if (res.data.success === false) {
+        console.log(res.data)
+        return
+      }
+
+      // console.log(res.data)
+
+      setAllNotes(res.data.notes)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleEdit = (noteDetails) => {
     setOpenAddEditModal({ isShown: true, data: noteDetails, type: "edit" })
   }
 
   // Delete Note
-  const deleteNote = async (data) => {}
+  const deleteNote = async (data) => {
+    const noteId = data._id
 
-  //searchnote api
-  const onSearchNote = async (query) => {}
+    try {
+      const res = await axios.delete(
+        "http://localhost:3000/api/note/delete/" + noteId,
+        { withCredentials: true }
+      )
+
+      if (res.data.success === false) {
+        toast.error(res.data.message)
+        return
+      }
+
+      toast.success(res.data.message)
+      getAllNotes()
+    } catch (error) {
+      toast(error.message)
+    }
+  }
+
+  const onSearchNote = async (query) => {
+    try {
+      const res = await axios.get("http://localhost:3000/api/note/search", {
+        params: { query },
+        withCredentials: true,
+      })
+
+      if (res.data.success === false) {
+        console.log(res.data.message)
+        toast.error(res.data.message)
+        return
+      }
+
+      setIsSearch(true)
+      setAllNotes(res.data.notes)
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
 
   const handleClearSearch = () => {
     setIsSearch(false)
     getAllNotes()
   }
 
-  const updateIsPinned = async (noteData) => {}
+  const updateIsPinned = async (noteData) => {
+    const noteId = noteData._id
+
+    try {
+      const res = await axios.put(
+        "http://localhost:3000/api/note/update-note-pinned/" + noteId,
+        { isPinned: !noteData.isPinned },
+        { withCredentials: true }
+      )
+
+      if (res.data.success === false) {
+        toast.error(res.data.message)
+        console.log(res.data.message)
+        return
+      }
+
+      toast.success(res.data.message)
+      getAllNotes()
+    } catch (error) {
+      console.log(error.message)
+    }
+  }
 
   return (
     <>
@@ -64,7 +142,8 @@ const Home = () => {
       />
 
       <div className="container mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 max-md:m-5">
+        {allNotes.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mt-8 max-md:m-5">
             {allNotes.map((note, index) => (
               <NoteCard
                 key={note._id}
@@ -85,6 +164,20 @@ const Home = () => {
               />
             ))}
           </div>
+        ) : (
+          <EmptyCard
+            imgSrc={
+              isSearch
+                ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtakcQoMFXwFwnlochk9fQSBkNYkO5rSyY9A&s"
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDCtZLuixBFGTqGKdWGLaSKiO3qyhW782aZA&s"
+            }
+            message={
+              isSearch
+                ? "Oops! No Notes found matching your search"
+                : `Ready to capture your ideas? Click the 'Add' button to start noting down your thoughts, inspiration and reminders. Let's get started!`
+            }
+          />
+        )}
       </div>
 
       <button
