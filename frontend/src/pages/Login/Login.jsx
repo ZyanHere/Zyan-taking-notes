@@ -1,5 +1,4 @@
 import { useState } from "react"
-import PasswordInput from "../../components/Input/PasswordInput"
 import { Link, useNavigate } from "react-router-dom"
 import { validateEmail } from "../../utils/helper"
 import { useDispatch } from "react-redux"
@@ -10,6 +9,7 @@ import {
 } from "../../redux/user/userSlice"
 import axios from "axios"
 import { toast } from "react-toastify"
+import PasswordInput from "../../components/Input/PasswordInput"
 
 const Login = () => {
   const [email, setEmail] = useState("")

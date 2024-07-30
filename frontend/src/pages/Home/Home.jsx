@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react"
-import NoteCard from "../../components/Cards/NoteCard"
 import { MdAdd } from "react-icons/md"
 import Modal from "react-modal"
-import AddEditNotes from "./AddEditNotes"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import Navbar from "../../components/Navbar"
 import axios from "axios"
 import { toast } from "react-toastify"
-import EmptyCard from "../../components/EmptyCard/EmptyCard"
+import NoteCard from "../../components/Cards/NoteCard"
+import EmptyCard from "../../components/EmptyCard"
+import AddEditNotes from "./AddEditNotes"
+import Navbar from './../../components/Navbar';
 
 const Home = () => {
   const { currentUser } = useSelector(

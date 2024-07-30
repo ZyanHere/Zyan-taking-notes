@@ -1,6 +1,4 @@
 import { useState } from "react"
-import SearchBar from "./SearchBar/SearchBar"
-import ProfileInfo from "./Cards/ProfileInfo"
 import { Link, useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { toast } from "react-toastify"
@@ -10,6 +8,8 @@ import {
   signoutStart,
 } from "../redux/user/userSlice"
 import axios from "axios"
+import SearchBar from "./SearchBar"
+import ProfileInfo from './Cards/ProfileInfo';
 
 const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("")

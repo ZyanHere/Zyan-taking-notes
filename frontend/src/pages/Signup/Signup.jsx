@@ -1,9 +1,9 @@
 import { useState } from "react"
-import PasswordInput from "../../components/Input/PasswordInput"
 import { Link, useNavigate } from "react-router-dom"
-import { validateEmail } from "../../utils/helper"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { validateEmail } from "../../utils/helper"
+import PasswordInput from "../../components/Input/PasswordInput"
 
 const Signup = () => {
   const [name, setName] = useState("")

@@ -1,8 +1,8 @@
 import { useState } from "react"
 import { MdClose } from "react-icons/md"
-import TagInput from "../../components/Input/TagInput "
 import axios from "axios"
 import { toast } from "react-toastify"
+import TagInput from "../../components/Input/TagInput"
 
 const AddEditNotes = ({ onClose, noteData, type, getAllNotes }) => {
   const [title, setTitle] = useState(noteData?.title || "")
