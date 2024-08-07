@@ -20,7 +20,6 @@ const Home = () => {
 
   const [isSearch, setIsSearch] = useState(false)
 
-  // console.log(allNotes)
 
   const navigate = useNavigate()
 
@@ -51,7 +50,6 @@ const Home = () => {
         return
       }
 
-      // console.log(res.data)
 
       setAllNotes(res.data.notes)
     } catch (error) {
